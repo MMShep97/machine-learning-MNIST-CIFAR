@@ -92,7 +92,7 @@ print(device)
 net.to(device)
 
 # train CNN and store best model based on validation loss ----------------------------------------
-PATH = r"C:\Users\Marc\Desktop\Machine Learning Project\mnist_net.pth"
+PATH = r"C:\Users\Marc\OneDrive - University of Iowa\College\Machine Learning Project\mnist_net.pth"
 
 
 start_time = time.time()

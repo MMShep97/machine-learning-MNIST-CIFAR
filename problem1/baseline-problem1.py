@@ -8,8 +8,8 @@ import torch.nn as nn
 import torch.nn.functional as F
 import time
 
-learning_rate = 0.005
-EPOCHS = 30
+learning_rate = 0.0005
+EPOCHS = 10
 # keeps the data consistent
 torch.manual_seed(0)
 np.random.seed(0)
@@ -107,7 +107,7 @@ print(device)
 net.to(device)
 
 # train CNN and store best model based on validation loss ----------------------------------------
-PATH = r"C:\Users\Marc\Desktop\Machine Learning Project\mnist_net.pth"
+PATH = r"C:\Users\Marc\OneDrive - University of Iowa\College\Machine Learning Project\mnist_net.pth"
 
 
 start_time = time.time()

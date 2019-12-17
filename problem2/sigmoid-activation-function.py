@@ -10,6 +10,7 @@ import time
 
 valid_ratio = 0.3
 learning_rate = 0.005
+EPOCHS = 10
 # keeps the data consistent
 torch.manual_seed(0)
 np.random.seed(0)
@@ -92,14 +93,14 @@ print(device)
 net.to(device)
 
 # train CNN and store best model based on validation loss ----------------------------------------
-PATH = r"C:\Users\Marc\Desktop\Machine Learning Project\mnist_net.pth"
+PATH = r"C:\Users\Marc\OneDrive - University of Iowa\College\Machine Learning Project\mnist_net.pth"
 
 
 start_time = time.time()
 best_loss = np.float('inf')
 training_losses = []
 epochs = []
-for epoch in range(10):  # loop over the dataset multiple times
+for epoch in range(EPOCHS):  # loop over the dataset multiple times
 
     epochs.append(epoch)
     running_loss = 0.0
