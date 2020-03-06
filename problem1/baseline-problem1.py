@@ -8,8 +8,9 @@ import torch.nn as nn
 import torch.nn.functional as F
 import time
 
-learning_rate = 0.0005
-EPOCHS = 10
+learning_rate = 0.005
+EPOCHS = 15
+EARLY_STOP_THRESHOLD = 3
 # keeps the data consistent
 torch.manual_seed(0)
 np.random.seed(0)
@@ -20,7 +21,7 @@ print('=> Prepping Data...')
 transform = transforms.Compose(
     [
     transforms.RandomRotation(degrees=40),
-    transforms.ColorJitter(hue=0.5, saturation=0.8),
+    transforms.ColorJitter(brightness=0.3, contrast=0.4, hue=0.5, saturation=0.8),
     transforms.ToTensor(),
     transforms.Normalize((0.1307,), (0.3081,))])
 
@@ -113,6 +114,7 @@ PATH = r"C:\Users\Marc\OneDrive - University of Iowa\College\Machine Learning Pr
 start_time = time.time()
 best_loss = np.float('inf')
 training_losses = []
+validation_losses = []
 epochs = []
 
 correct = 0
@@ -120,7 +122,13 @@ total = 0
 percent_correct_array = []
 current_time_array = []
 test_start_time = time.time()
+early_stop_counter = 0
+previous_validation_loss = 1000
 for epoch in range(EPOCHS):  # loop over the dataset multiple times
+
+    # if early_stop_counter == EARLY_STOP_THRESHOLD:
+    #   print("EARLY STOP ENGAGING AT EPOCH: ", epoch)
+    #   break
 
     epochs.append(epoch)
     running_loss = 0.0
@@ -162,11 +170,19 @@ for epoch in range(EPOCHS):  # loop over the dataset multiple times
           # print statistics
           running_loss += loss.item()
       epoch_loss = running_loss / (i+1)
+      validation_losses.append(epoch_loss)
+
+      # early stopping!
+      if epoch_loss > previous_validation_loss:
+        early_stop_counter = early_stop_counter + 1
+        print('Early stop count', early_stop_counter)
+
+      previous_validation_loss = epoch_loss
+
       print("Epoch: ", epoch, " validation loss: ", '%.3f' % epoch_loss, ' validation accuracy: ', 100 * correct / total )
       percent_correct_array.append( 100 * correct / total )
       current_time_array.append(time.time() - test_start_time)
 
-      # used to prevent worse error (early stop)
       if epoch_loss < best_loss:
         torch.save(net.state_dict(), PATH)
         best_loss = epoch_loss
@@ -176,37 +192,36 @@ print('Finished Training in %d mins' % time_elap)
 
 
 # getting validation accuracy
-# net = Net()
-# net.load_state_dict(torch.load(PATH))
+correct = 0
+total = 0
+percent_correct_array = []
+current_time_array = []
+test_start_time = time.time()
+with torch.no_grad():
+    for data in valid_loader:
+        images, labels = data
+        outputs = net(images)
+        _, predicted = torch.max(outputs.data, 1)
+        total += labels.size(0)
+        correct += (predicted == labels).sum().item()
+        percent_correct_array.append( 100 * correct / total )
+        current_time_array.append(time.time() - test_start_time)
 
-# correct = 0
-# total = 0
-# percent_correct_array = []
-# current_time_array = []
-# test_start_time = time.time()
-# with torch.no_grad():
-#     for data in test_loader:
-#         images, labels = data
-#         outputs = net(images)
-#         _, predicted = torch.max(outputs.data, 1)
-#         total += labels.size(0)
-#         correct += (predicted == labels).sum().item()
-#         percent_correct_array.append( 100 * correct / total )
-#         current_time_array.append(time.time() - test_start_time)
-
-# print('Accuracy of the network on the test images: %.3f %%' % (
-#     100 * correct / total))
+print('Accuracy of the network on the test images: %.3f %%' % (
+    100 * correct / total))
 
 # Allows me to graph them in a separate file together
-# print("current time array")
-# print(*current_time_array, sep = ", ")
-# print('validation accuracy')
-# print(*percent_correct_array, sep = ", ")
+print("current time array")
+print(*current_time_array, sep = ", ")
+print('validation accuracy')
+print(*percent_correct_array, sep = ", ")
 
 print("epochs")
 print(*epochs, sep = ", ")
 print('training loss')
 print(*training_losses, sep = ", ")
+print('validation loss')
+print(*validation_losses, sep = ", ")
 
 # Plotting training loss at epoch num
 plt.plot(epochs, training_losses, marker='o', linestyle='dashed')
@@ -214,6 +229,7 @@ plt.xlabel('epoch')
 plt.ylabel('training loss')
 plt.title('Training Loss vs. Epoch')
 plt.show()
+
 
 # Plots validation accuracy over time
 plt.plot(current_time_array, percent_correct_array)
