@@ -1,7 +1,9 @@
-# machine-learning-MNIST-CIFAR
-Machine Learning EoY Project
+# Machine Learning EoY Project
 
-# Aim:
+See [here](documents/Machine-Learning-Project-pdf.pdf) for the outcome of my project & what I learned.
+
+# Problem Statement
+## Aim:
 
 In this project, you will develop and test deep networks to classify natural. You will mainly be working
 with the MNIST dataset to gain intuition. The smaller MNIST dataset allows you to develop code and test
@@ -13,7 +15,7 @@ add in more advanced or even state-of-the-art techniques, including high-end arc
 augmentation and network regularization, to improve the classification accuracy.
 https://pytorch.org/tutorials/beginner/blitz/cifar10_tutorial.html is a proper starting point.
 
-# Platform and Deep Learning Library:
+## Platform and Deep Learning Library:
 
 You are encouraged to use
 
@@ -21,7 +23,7 @@ You are encouraged to use
 Tensorflow) installed.
  Pytorch: Easy to use.
 
-# 1. Baseline Network on MNIST dataset ( 25 points)
+## 1. Baseline Network on MNIST dataset ( 25 points)
 
 ```
 The goal of this component is to extend the code that is provided to you on ICON to implement a
@@ -62,7 +64,7 @@ Fig. 1
     dataset.
 See https://pytorch.org/tutorials/beginner/blitz/cifar10_tutorial.html for an example
 
-# 2. Model Exploration (50 points):
+## 2. Model Exploration (50 points):
 
 ```
 The goal of this section is to understand the impact of the following hyperparameters and
@@ -112,7 +114,7 @@ c. Test the classification accuracy and compare it to that without using augment
        number of parameters.
     b. Test the classification accuracy and give your observation.
 
-# 3. Extension to CIFAR-10 dataset (25 points):
+## 3. Extension to CIFAR-10 dataset (25 points):
 
 ```
 The goal of this component is to extend the above model to CIFAR 10 dataset and report the
@@ -120,7 +122,7 @@ testing performance. Note that the CIFAR10 dataset requires more training time. 
 difficult to vary the parameters and test their impact. You may look at
 https://pytorch.org/tutorials/beginner/blitz/cifar10_tutorial.html for examples.
 ```
-# 4. Extra credit (20 points): Optimize the model to improve performance
+## 4. Extra credit (20 points): Optimize the model to improve performance
 
 ```
 Based on the intuition gained in Section 2, adapt the model (depth, number of layers),
@@ -136,7 +138,7 @@ Next 5 students: 15 points
 Next 5 students 10 points
 Next 5 students 5 points
 ```
-# Rubric:
+## Rubric:
 
 ```
 a. The project will be scored mainly based on how much designing space you have explored.
